@@ -1,3 +1,4 @@
 INSERT INTO books (authors, created_at, isbn, copies, publisher, synopsis, title, `year`) VALUES('J.K. Rowling', '2023-03-29 12:00:00', '9788831003384', 10, 'Salani', 'Harry Potter first volume', 'Harry Potter and the Sorcerer stone', 1999);
 INSERT INTO books (authors, created_at, isbn, copies, publisher, synopsis, title, `year`) VALUES('J.K. Rowling', '2023-03-29 12:00:00', '9788831003385', 10, 'Salani', 'Harry Potter second volume', 'Harry Potter and the chamber of secrets', 2000);
 INSERT INTO books (authors, created_at, isbn, copies, publisher, synopsis, title, `year`) VALUES('J.K. Rowling', '2023-03-29 12:00:00', '9788831003386', 10, 'Salani', 'Harry Potter third volume', 'Harry Potter and the Azkaban prisoner', 2001);
+INSERT INTO books (authors, created_at, isbn, copies, publisher, synopsis, title, `year`) VALUES('Frank Herbert', '2023-03-30 10:45:00', '1088831003386', 3, 'Einaudi', null, 'Dune', 1969);

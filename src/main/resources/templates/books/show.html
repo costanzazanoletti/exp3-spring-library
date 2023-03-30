@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <th:block th:replace="/fragments/resources :: head"></th:block>
+  <title>Book detail</title>
+</head>
+<body>
+<th:block th:replace="/fragments/navbar :: navbar('books', '', false)"></th:block>
+<div class="container" th:object="${book}">
+  <h1 th:text="*{title}">Books</h1>
+  <h2 th:text="|Written by *{authors}|" class="text-muted"></h2>
+  <hr/>
+  <div>
+    <dl>
+      <dt>ISBN</dt>
+      <dd th:text="*{isbn}"></dd>
+      <dt>Publisher</dt>
+      <dd th:text="*{publisher}"></dd>
+      <dt>Year</dt>
+      <dd th:text="*{year}"></dd>
+      <dt>Number of copies</dt>
+      <dd th:text="*{numberOfCopies}"></dd>
+      <th:block th:unless="${#strings.isEmpty(book.synopsis)}">
+        <dt>Synopsis</dt>
+        <dd th:text="*{synopsis}"></dd>
+      </th:block>
+      <dt>Created at</dt>
+      <dd th:text="${#temporals.format(book.createdAt,'dd/MM/yyyy HH:mm')}"></dd>
+    </dl>
+  </div>
+</div>
+
+</body>
+</html>

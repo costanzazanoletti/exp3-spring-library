@@ -1,29 +1,42 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Title</title>
+  <th:block th:replace="/fragments/resources :: head"></th:block>
+  <title>Books</title>
 </head>
 <body>
-<h1>Books</h1>
-<table>
-  <thead>
-  <tr>
-    <th>Title</th>
-    <th>Authors</th>
-    <th>Publisher</th>
-    <th>Year</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr th:each="book : ${list}" th:object="${book}">
-    <td th:text="*{title}"></td>
-    <td th:text="*{authors}"></td>
-    <td th:text="*{publisher}"></td>
-    <td th:text="*{year}"></td>
-  </tr>
-  </tbody>
-</table>
+<th:block th:replace="/fragments/navbar :: navbar('books', ${keyword}, true)"></th:block>
+<div class="container">
+  <h1>Books</h1>
+  <!-- books table only if list is not empty -->
+  <table class="table" th:if="${list.size() > 0}">
+    <thead>
+    <tr>
+      <th>Title</th>
+      <th>Authors</th>
+      <th>Publisher</th>
+      <th>Year</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="book : ${list}" th:object="${book}">
+      <td th:text="*{title}"></td>
+      <td th:text="*{authors}"></td>
+      <td th:text="*{publisher}"></td>
+      <td th:text="*{year}"></td>
+      <td>
+        <a th:href="@{|/books/*{id}|}" class="btn btn-primary btn-sm" title="detail"><i
+            class="fa-solid fa-book"></i></a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <!-- alert only if list is empty -->
+  <div class="alert alert-info" th:unless="${list.size() > 0}">
+    <p>There are no books to show</p>
+  </div>
+</div>
 
 </body>
 </html>

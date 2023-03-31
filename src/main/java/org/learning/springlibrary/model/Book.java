@@ -7,6 +7,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Entity
@@ -17,18 +22,40 @@ public class Book {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
+  @Size(min = 13, max = 13, message = "The isbn size is exactly 13")
   @Column(nullable = false)
   private String isbn;
+  @NotEmpty
   private String title;
+  @NotEmpty
   private String authors;
+  @NotEmpty
   private String publisher;
+  @NotNull
   private Integer year;
   @Lob
   private String synopsis;
 
+  @PositiveOrZero
   @Column(name = "copies")
   private Integer numberOfCopies;
   private LocalDateTime createdAt;
+
+  public Book() {
+    super();
+  }
+
+  public Book(String isbn, String title, String authors, String publisher, Integer year,
+      String synopsis, Integer numberOfCopies, LocalDateTime createdAt) {
+    this.isbn = isbn;
+    this.title = title;
+    this.authors = authors;
+    this.publisher = publisher;
+    this.year = year;
+    this.synopsis = synopsis;
+    this.numberOfCopies = numberOfCopies;
+    this.createdAt = createdAt;
+  }
 
   public Integer getId() {
     return id;

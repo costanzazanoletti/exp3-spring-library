@@ -7,7 +7,8 @@
 <body>
 <th:block th:replace="/fragments/navbar :: navbar('books', ${keyword}, true)"></th:block>
 <div class="container">
-  <h1>Books</h1>
+  <h1>Books <a th:href="@{/books/create}" class="btn btn-primary rounded-circle" title="add book"><i
+      class="fa-solid fa-plus"></i></a></h1>
   <!-- books table only if list is not empty -->
   <table class="table" th:if="${list.size() > 0}">
     <thead>

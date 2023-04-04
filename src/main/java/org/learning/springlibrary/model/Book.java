@@ -23,7 +23,7 @@ public class Book {
   private Integer id;
 
   @Size(min = 13, max = 13, message = "The isbn size is exactly 13")
-  @Column(nullable = false)
+  @Column(nullable = false, unique = true)
   private String isbn;
   @NotEmpty
   private String title;

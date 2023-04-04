@@ -9,6 +9,14 @@
 <div class="container">
   <h1>Books <a th:href="@{/books/create}" class="btn btn-primary rounded-circle" title="add book"><i
       class="fa-solid fa-plus"></i></a></h1>
+  <!-- leggo la variabile message (flashAttribute) -->
+  <th:block th:if="${message}">
+    <div class="alert alert-dismissible fade show"
+         th:classAppend="${#strings.equals(message.type, 'SUCCESS')} ? alert-success : alert-danger">
+      <div th:text="${message.text}"></div>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  </th:block>
   <!-- books table only if list is not empty -->
   <table class="table" th:if="${list.size() > 0}">
     <thead>
@@ -29,6 +37,10 @@
       <td>
         <a th:href="@{|/books/*{id}|}" class="btn btn-primary btn-sm" title="detail"><i
             class="fa-solid fa-book"></i></a>
+        <a th:href="@{|/books/edit/*{id}|}" class="btn btn-primary btn-sm" title="edit"><i
+            class="fa-solid fa-pen-to-square"></i></a>
+        <a th:href="@{|/books/delete/*{id}|}" class="btn btn-primary btn-sm" title="edit"><i
+            class="fa-solid fa-trash-can"></i></a>
       </td>
     </tr>
     </tbody>

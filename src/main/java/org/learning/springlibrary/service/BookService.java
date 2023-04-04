@@ -30,6 +30,18 @@ public class BookService {
     return bookRepository.save(bookToPersist);
   }
 
+  public Book updateBook(Book formBook, Integer id) throws BookNotFoundException {
+    Book bookToUpdate = getById(id);
+    bookToUpdate.setTitle(formBook.getTitle());
+    bookToUpdate.setAuthors(formBook.getAuthors());
+    bookToUpdate.setPublisher(formBook.getPublisher());
+    bookToUpdate.setYear(formBook.getYear());
+    bookToUpdate.setIsbn(formBook.getIsbn());
+    bookToUpdate.setSynopsis(formBook.getSynopsis());
+    bookToUpdate.setNumberOfCopies(formBook.getNumberOfCopies());
+    return bookRepository.save(bookToUpdate);
+  }
+
   public List<Book> getAllBooks() {
     return bookRepository.findAll(Sort.by("title"));
   }
@@ -47,7 +59,7 @@ public class BookService {
     }
   }
 
-  public boolean deleteById(Integer id) {
+  public boolean deleteById(Integer id) throws BookNotFoundException {
     bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(Integer.toString(id)));
     try {
       bookRepository.deleteById(id);
@@ -55,5 +67,13 @@ public class BookService {
     } catch (Exception e) {
       return false;
     }
+  }
+
+  public boolean isValidIsbn(Book bookToValidate) {
+    // verifico se su database esiste un book con lo stesso isbn di bookToValidate che non sia bookToValidate
+    if (bookToValidate.getId() == null) {
+      return !bookRepository.existsByIsbn(bookToValidate.getIsbn());
+    }
+    return !bookRepository.existsByIsbnAndIdNot(bookToValidate.getIsbn(), bookToValidate.getId());
   }
 }

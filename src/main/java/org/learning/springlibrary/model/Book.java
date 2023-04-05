@@ -6,13 +6,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "books")
@@ -40,6 +41,10 @@ public class Book {
   @Column(name = "copies")
   private Integer numberOfCopies;
   private LocalDateTime createdAt;
+
+  @OneToMany(mappedBy = "book")
+  private List<Borrowing> borrowings;
+
 
   public Book() {
     super();
@@ -127,5 +132,29 @@ public class Book {
 
   public void setCreatedAt(LocalDateTime createdAt) {
     this.createdAt = createdAt;
+  }
+
+  public List<Borrowing> getBorrowings() {
+    return borrowings;
+  }
+
+  public void setBorrowings(List<Borrowing> borrowings) {
+    this.borrowings = borrowings;
+  }
+
+  /* CUSTOM METHODS */
+  public int getAvailableCopies() {
+    int availableCopies = numberOfCopies;
+    // conto quante copie sono in prestito e non ritornate
+    if (borrowings != null) {
+      for (Borrowing b : borrowings) {
+        if (b.getReturnDate() == null) {
+          // sottraggo 1 al numero di copie
+          availableCopies--;
+        }
+      }
+    }
+
+    return availableCopies;
   }
 }

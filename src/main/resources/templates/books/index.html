@@ -11,11 +11,7 @@
       class="fa-solid fa-plus"></i></a></h1>
   <!-- leggo la variabile message (flashAttribute) -->
   <th:block th:if="${message}">
-    <div class="alert alert-dismissible fade show"
-         th:classAppend="${#strings.equals(message.type, 'SUCCESS')} ? alert-success : alert-danger">
-      <div th:text="${message.text}"></div>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
+    <div th:replace="~{/fragments/messages :: alert(${message.type}, ${message.text})}"></div>
   </th:block>
   <!-- books table only if list is not empty -->
   <table class="table" th:if="${list.size() > 0}">
@@ -46,9 +42,9 @@
     </tbody>
   </table>
   <!-- alert only if list is empty -->
-  <div class="alert alert-info" th:unless="${list.size() > 0}">
-    <p>There are no books to show</p>
-  </div>
+  <th:block th:unless="${list.size() > 0}">
+    <div th:replace="~{/fragments/messages :: alert('INFO', 'The list is empty')}"></div>
+  </th:block>
 </div>
 
 </body>

@@ -3,7 +3,7 @@ package org.learning.springlibrary.model;
 public class AlertMessage {
 
   public enum AlertMessageType {
-    SUCCESS, ERROR
+    SUCCESS, ERROR, INFO, WARNING
   }
 
   private AlertMessageType type;

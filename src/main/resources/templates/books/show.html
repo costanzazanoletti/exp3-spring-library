@@ -17,9 +17,12 @@
       <dt>Publisher</dt>
       <dd th:text="*{publisher}"></dd>
       <dt>Year</dt>
-      <dd th:text="*{year}"></dd>
+      <dd th:text="*{year}"></dd> <!-- ${book.getYear()}-->
       <dt>Number of copies</dt>
-      <dd th:text="*{numberOfCopies}"></dd>
+      <dd>
+        <span th:text="*{numberOfCopies}"></span>
+        <span th:text="|(*{availableCopies} available)|"></span><!-- ${book.getAvailableCopies()}-->
+      </dd>
       <th:block th:unless="${#strings.isEmpty(book.synopsis)}">
         <dt>Synopsis</dt>
         <dd th:text="*{synopsis}"></dd>
@@ -28,6 +31,32 @@
       <dd th:text="${#temporals.format(book.createdAt,'dd/MM/yyyy HH:mm')}"></dd>
     </dl>
   </div>
+  <!-- borrowings -->
+  <h2>
+    <span>Borrowings</span>
+    <a th:href="@{/borrowings/create(bookId=${book.id})}"
+       class="btn btn-primary rounded-circle"
+       title="add borrowing"
+    >
+      <i class="fa-solid fa-plus"></i>
+    </a>
+  </h2>
+  <table class="table">
+    <thead>
+    <tr>
+      <th scope="col">Borrowing date</th>
+      <th scope="col">Expire date</th>
+      <th scope="col">Return date</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="borrowing : *{borrowings}" th:object="${borrowing}">
+      <td th:text="${#temporals.format(borrowing.borrowingDate, 'dd/MM/yyyy')}"></td>
+      <td th:text="${#temporals.format(borrowing.expireDate, 'dd/MM/yyyy')}"></td>
+      <td th:text="${#temporals.format(borrowing.returnDate, 'dd/MM/yyyy')}"></td>
+    </tr>
+    </tbody>
+  </table>
 </div>
 
 </body>

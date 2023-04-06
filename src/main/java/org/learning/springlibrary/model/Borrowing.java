@@ -17,6 +17,7 @@ public class Borrowing {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
+  @NotNull
   private LocalDate borrowingDate;
   private LocalDate returnDate;
   private LocalDate expireDate;

@@ -8,3 +8,8 @@ INSERT INTO borrowings (borrowing_date, expire_date, return_date, book_id) VALUE
 INSERT INTO borrowings (borrowing_date, expire_date, return_date, book_id) VALUES('2023-03-01', '2023-04-01', null, 1);
 INSERT INTO borrowings (borrowing_date, expire_date, return_date, book_id) VALUES('2023-01-01', '2023-02-01', '2023-01-15', 2);
 INSERT INTO borrowings (borrowing_date, expire_date, return_date, book_id) VALUES('2023-01-01', '2023-02-01', '2023-01-15', 3);
+
+INSERT INTO categories (description, name) VALUES('Novel', 'Novel');
+INSERT INTO categories (description, name) VALUES('Fantasy', 'Fantasy');
+INSERT INTO categories (description, name) VALUES('Coding', 'Coding');
+INSERT INTO categories (description, name) VALUES('Age 11-18', 'Teen');

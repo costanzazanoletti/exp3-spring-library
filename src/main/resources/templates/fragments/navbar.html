@@ -20,6 +20,10 @@
           <a class="nav-link" th:href="@{/users}"
              th:classAppend="${current == 'users'} ? active : not-active">Users</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/categories}"
+             th:classAppend="${current == 'categories'} ? active : not-active">Categories</a>
+        </li>
       </ul>
       <form
           th:if="${showSearch}"

@@ -7,6 +7,9 @@
 <body>
 <th:block th:replace="/fragments/navbar :: navbar('books', '', false)"></th:block>
 <div class="container" th:object="${book}">
+  <th:block th:if="${message}">
+    <div th:replace="~{/fragments/messages :: alert(${message.type}, ${message.text})}"></div>
+  </th:block>
   <h1 th:text="*{title}">Books</h1>
   <h2 th:text="|Written by *{authors}|" class="text-muted"></h2>
   <hr/>
@@ -29,34 +32,55 @@
       </th:block>
       <dt>Created at</dt>
       <dd th:text="${#temporals.format(book.createdAt,'dd/MM/yyyy HH:mm')}"></dd>
+      <dt>Categories</dt>
+      <dd><span th:each="cat : *{categories}" th:text="${cat.name}" class="me-1"></span></dd>
     </dl>
   </div>
   <!-- borrowings -->
-  <h2>
-    <span>Borrowings</span>
-    <a th:href="@{/borrowings/create(bookId=${book.id})}"
-       class="btn btn-primary rounded-circle"
-       title="add borrowing"
-    >
-      <i class="fa-solid fa-plus"></i>
-    </a>
-  </h2>
-  <table class="table">
-    <thead>
-    <tr>
-      <th scope="col">Borrowing date</th>
-      <th scope="col">Expire date</th>
-      <th scope="col">Return date</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="borrowing : *{borrowings}" th:object="${borrowing}">
-      <td th:text="${#temporals.format(borrowing.borrowingDate, 'dd/MM/yyyy')}"></td>
-      <td th:text="${#temporals.format(borrowing.expireDate, 'dd/MM/yyyy')}"></td>
-      <td th:text="${#temporals.format(borrowing.returnDate, 'dd/MM/yyyy')}"></td>
-    </tr>
-    </tbody>
-  </table>
+  <th:block th:if="${book.borrowings != null && book.borrowings.size() > 0}">
+    <h2>
+      <span>Borrowings</span>
+      <a
+          th:if="${book.availableCopies > 0}"
+          th:href="@{/borrowings/create(bookId=${book.id})}"
+          class="btn btn-primary rounded-circle"
+          title="add borrowing"
+      >
+        <i class="fa-solid fa-plus"></i>
+      </a>
+    </h2>
+    <table class="table">
+      <thead>
+      <tr>
+        <th scope="col">Borrowing date</th>
+        <th scope="col">Expire date</th>
+        <th scope="col">Return date</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="borrowing : *{borrowings}" th:object="${borrowing}">
+        <td th:text="${#temporals.format(borrowing.borrowingDate, 'dd/MM/yyyy')}"></td>
+        <td th:text="${#temporals.format(borrowing.expireDate, 'dd/MM/yyyy')}"></td>
+        <td th:text="${#temporals.format(borrowing.returnDate, 'dd/MM/yyyy')}"></td>
+        <td>
+          <a th:href="@{|/borrowings/edit/*{id}|}" class="btn btn-primary btn-sm"
+             title="edit borrowing">
+            <i class="fa-solid fa-pen-to-square"></i>
+          </a>
+          <a th:href="@{|/borrowings/delete/*{id}?bookId=${book.id}|}"
+             class="btn btn-primary btn-sm"
+             title="delete borrowing">
+            <i class="fa-solid fa-trash-can"></i>
+          </a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </th:block>
+  <th:block th:unless="${book.borrowings != null && book.borrowings.size() > 0}">
+    <div th:replace="~{/fragments/messages :: alert('INFO', 'No borrowings yet')}"></div>
+  </th:block>
 </div>
 
 </body>

@@ -3,7 +3,6 @@ package org.learning.springlibrary.service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import javax.swing.text.html.Option;
 import org.learning.springlibrary.exceptions.BookNotFoundException;
 import org.learning.springlibrary.model.Book;
 import org.learning.springlibrary.repository.BookRepository;
@@ -27,6 +26,7 @@ public class BookService {
     bookToPersist.setYear(formBook.getYear());
     bookToPersist.setNumberOfCopies(formBook.getNumberOfCopies());
     bookToPersist.setCreatedAt(LocalDateTime.now());
+    bookToPersist.setCategories(formBook.getCategories());
     return bookRepository.save(bookToPersist);
   }
 
@@ -39,6 +39,7 @@ public class BookService {
     bookToUpdate.setIsbn(formBook.getIsbn());
     bookToUpdate.setSynopsis(formBook.getSynopsis());
     bookToUpdate.setNumberOfCopies(formBook.getNumberOfCopies());
+    bookToUpdate.setCategories(formBook.getCategories());
     return bookRepository.save(bookToUpdate);
   }
 

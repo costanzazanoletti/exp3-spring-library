@@ -1,17 +1,15 @@
 package org.learning.springlibrary.controller;
 
 import jakarta.validation.Valid;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.learning.springlibrary.exceptions.BookNotFoundException;
 import org.learning.springlibrary.model.AlertMessage;
 import org.learning.springlibrary.model.AlertMessage.AlertMessageType;
 import org.learning.springlibrary.model.Book;
-import org.learning.springlibrary.repository.BookRepository;
 import org.learning.springlibrary.service.BookService;
+import org.learning.springlibrary.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,6 +31,9 @@ public class BookController {
 
   @Autowired
   private BookService bookService;
+
+  @Autowired
+  private CategoryService categoryService;
 
   @GetMapping
   public String index(Model model, @RequestParam(name = "q") Optional<String> keyword) {
@@ -71,6 +72,7 @@ public class BookController {
   @GetMapping("/create")
   public String create(Model model) {
     model.addAttribute("book", new Book());
+    model.addAttribute("categoryList", categoryService.getAll());
     //return "/books/create";
     return "/books/edit";
   }
@@ -90,6 +92,7 @@ public class BookController {
     if (hasErrors) {
       // ritorno alla view con il form
       // return "/books/create";
+      model.addAttribute("categoryList", categoryService.getAll());
       return "/books/edit";
     }
     // se non ci sono errori procedo con la persistenza
@@ -102,6 +105,7 @@ public class BookController {
     try {
       Book book = bookService.getById(id);
       model.addAttribute("book", book);
+      model.addAttribute("categoryList", categoryService.getAll());
       return "/books/edit";
     } catch (BookNotFoundException e) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "book with id " + id + " not found");
@@ -110,7 +114,7 @@ public class BookController {
 
   @PostMapping("/edit/{id}")
   public String doEdit(@PathVariable Integer id, @Valid @ModelAttribute("book") Book formBook,
-      BindingResult bindingResult) {
+      BindingResult bindingResult, Model model) {
     // VALIDATION
     if (!bookService.isValidIsbn(formBook)) {
       // aggiungo un errore al bindingResult
@@ -119,6 +123,7 @@ public class BookController {
     }
     if (bindingResult.hasErrors()) {
       // ricreo la view pre-compilata
+      model.addAttribute("categoryList", categoryService.getAll());
       return "/books/edit";
     }
     // persisto il book

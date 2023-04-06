@@ -2,20 +2,20 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <th:block th:replace="/fragments/resources :: head"></th:block>
-  <title>Create Borrowing</title>
+  <title>Borrowing</title>
 </head>
 <body>
 <th:block th:replace="/fragments/navbar :: navbar('books', '', false)"></th:block>
-<div class="container" th:with="book=${borrowing.book}">
+<div class="container" th:with="book=${borrowing.book}, edit=${borrowing.id != null}">
   <h1>
-    <span>Create Borrowing</span>
+    <span>Borrowing</span>
     <span th:if="${book != null}" th:text="|for ${book.title}|"></span>
   </h1>
   <form
       id="borrowing-form"
       method="post"
       class="row gy-3"
-      th:action="@{/borrowings/create}"
+      th:action="@{${edit ? '/borrowings/edit/' + borrowing.id : '/borrowings/create'}}"
       th:object="${borrowing}"
   >
     <!-- hidden input book -->
@@ -33,12 +33,23 @@
     </div>
     <!-- expire-date -->
     <div class="col-6">
-      <label class="form-label" for="expire-date">Expires*</label>
+      <label class="form-label" for="expire-date">Expires at*</label>
       <input type="date" id="expire-date" class="form-control" th:field="*{expireDate}"
              th:errorClass="is-invalid">
       <div class="invalid-feedback" th:if="${#fields.hasErrors('expireDate')}">
         <ul>
           <li th:each="err : ${#fields.errors('expireDate')}" th:text="${err}"></li>
+        </ul>
+      </div>
+    </div>
+    <!-- return-date -->
+    <div class="col-6" th:if="${edit}">
+      <label class="form-label" for="return-date">Returned at</label>
+      <input type="date" id="return-date" class="form-control" th:field="*{returnDate}"
+             th:errorClass="is-invalid">
+      <div class="invalid-feedback" th:if="${#fields.hasErrors('returnDate')}">
+        <ul>
+          <li th:each="err : ${#fields.errors('returnDate')}" th:text="${err}"></li>
         </ul>
       </div>
     </div>

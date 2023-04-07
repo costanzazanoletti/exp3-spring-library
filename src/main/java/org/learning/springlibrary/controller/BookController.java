@@ -7,10 +7,13 @@ import org.learning.springlibrary.exceptions.BookNotFoundException;
 import org.learning.springlibrary.model.AlertMessage;
 import org.learning.springlibrary.model.AlertMessage.AlertMessageType;
 import org.learning.springlibrary.model.Book;
+import org.learning.springlibrary.model.User;
+import org.learning.springlibrary.repository.UserRepository;
 import org.learning.springlibrary.service.BookService;
 import org.learning.springlibrary.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -35,6 +38,9 @@ public class BookController {
   @Autowired
   private CategoryService categoryService;
 
+  @Autowired
+  private UserRepository userRepository;
+
   @GetMapping
   public String index(Model model, @RequestParam(name = "q") Optional<String> keyword) {
     List<Book> books;
@@ -51,7 +57,11 @@ public class BookController {
 
 
   @GetMapping("/{bookId}")
-  public String show(@PathVariable("bookId") Integer id, Model model) {
+  public String show(@PathVariable("bookId") Integer id, Model model,
+      Authentication authentication) {
+    User loggedUser = userRepository.findByEmail(authentication.getName()).orElseThrow();
+    model.addAttribute("loggedUser", loggedUser);
+
     try {
       Book book = bookService.getById(id);
       model.addAttribute("book", book);

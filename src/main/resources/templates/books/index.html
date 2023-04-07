@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
   <th:block th:replace="/fragments/resources :: head"></th:block>
   <title>Books</title>
@@ -7,8 +8,15 @@
 <body>
 <th:block th:replace="/fragments/navbar :: navbar('books', ${keyword}, true)"></th:block>
 <div class="container">
-  <h1>Books <a th:href="@{/books/create}" class="btn btn-primary rounded-circle" title="add book"><i
-      class="fa-solid fa-plus"></i></a></h1>
+  <h1>Books
+    <a
+        th:href="@{/books/create}"
+        class="btn btn-primary rounded-circle"
+        title="add book"
+        sec:authorize="hasAuthority('ADMIN')"
+    >
+      <i class="fa-solid fa-plus"></i></a>
+  </h1>
   <!-- leggo la variabile message (flashAttribute) -->
   <th:block th:if="${message}">
     <div th:replace="~{/fragments/messages :: alert(${message.type}, ${message.text})}"></div>
@@ -35,11 +43,13 @@
       <td>
         <a th:href="@{|/books/*{id}|}" class="btn btn-primary btn-sm" title="detail"><i
             class="fa-solid fa-book"></i></a>
-        <a th:href="@{|/books/edit/*{id}|}" class="btn btn-primary btn-sm" title="edit"><i
+        <a th:href="@{|/books/edit/*{id}|}" sec:authorize="hasAuthority('ADMIN')"
+           class="btn btn-primary btn-sm" title="edit"><i
             class="fa-solid fa-pen-to-square"></i></a>
         <a
             th:if="${book.borrowings == null || book.borrowings.size() == 0}"
             th:href="@{|/books/delete/*{id}|}"
+            sec:authorize="hasAuthority('ADMIN')"
             class="btn btn-primary btn-sm"
             title="edit"><i
             class="fa-solid fa-trash-can"></i>

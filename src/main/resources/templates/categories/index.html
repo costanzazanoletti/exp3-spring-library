@@ -18,6 +18,7 @@
         <li class="list-group-item" th:each="item : ${list}">
           <h5 th:text="${item.name}"></h5>
           <p th:text="${item.description}"></p>
+          <a th:href="@{/categories(id=${item.id})}">Edit</a>
         </li>
       </ul>
     </div>
@@ -28,6 +29,7 @@
           th:action="@{/categories/save}"
           th:object="${categoryObj}"
       >
+        <input type="hidden" th:field="*{id}">
         <!-- name -->
         <div class="col-12">
           <label class="form-label" for="name">Name*</label>

@@ -24,4 +24,14 @@ public class CategoryService {
     return categoryRepository.save(categoryToCreate);
   }
 
+  public Category update(Category formCategory) {
+    // verifico che l'oggetto ci sia
+    //...
+    return categoryRepository.save(formCategory);
+  }
+
+  public Category getById(Integer id) {
+    return categoryRepository.findById(id).orElseThrow(() -> new RuntimeException());
+  }
+
 }

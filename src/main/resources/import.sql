@@ -13,6 +13,9 @@ INSERT INTO categories (description, name) VALUES('Fantasy', 'Fantasy');
 INSERT INTO categories (description, name) VALUES('Coding', 'Coding');
 INSERT INTO categories (description, name) VALUES('Age 11-18', 'Teen');
 
+INSERT INTO book_category (book_id, category_id) VALUES(1, 1);
+INSERT INTO book_category (book_id, category_id) VALUES(1, 2);
+
 INSERT INTO users (email, first_name, last_name, password) VALUES('john@email.it', 'John', 'Doe', '{noop}john');
 INSERT INTO users (email, first_name, last_name, password) VALUES('jane@email.it', 'Jane', 'Smith','{noop}jane');
 

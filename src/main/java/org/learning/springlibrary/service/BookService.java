@@ -1,11 +1,15 @@
 package org.learning.springlibrary.service;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import org.learning.springlibrary.exceptions.BookNotFoundException;
 import org.learning.springlibrary.model.Book;
+import org.learning.springlibrary.model.Category;
 import org.learning.springlibrary.repository.BookRepository;
+import org.learning.springlibrary.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -15,6 +19,9 @@ public class BookService {
 
   @Autowired
   BookRepository bookRepository;
+
+  @Autowired
+  CategoryRepository categoryRepository;
 
   public Book createBook(Book formBook) {
     Book bookToPersist = new Book();
@@ -26,9 +33,12 @@ public class BookService {
     bookToPersist.setYear(formBook.getYear());
     bookToPersist.setNumberOfCopies(formBook.getNumberOfCopies());
     bookToPersist.setCreatedAt(LocalDateTime.now());
-    bookToPersist.setCategories(formBook.getCategories());
+
+    Set<Category> formCategories = getBookCategories(formBook);
+    bookToPersist.setCategories(formCategories);
     return bookRepository.save(bookToPersist);
   }
+
 
   public Book updateBook(Book formBook, Integer id) throws BookNotFoundException {
     Book bookToUpdate = getById(id);
@@ -39,7 +49,8 @@ public class BookService {
     bookToUpdate.setIsbn(formBook.getIsbn());
     bookToUpdate.setSynopsis(formBook.getSynopsis());
     bookToUpdate.setNumberOfCopies(formBook.getNumberOfCopies());
-    bookToUpdate.setCategories(formBook.getCategories());
+    Set<Category> formCategories = getBookCategories(formBook);
+    bookToUpdate.setCategories(formCategories);
     return bookRepository.save(bookToUpdate);
   }
 
@@ -76,5 +87,13 @@ public class BookService {
       return !bookRepository.existsByIsbn(bookToValidate.getIsbn());
     }
     return !bookRepository.existsByIsbnAndIdNot(bookToValidate.getIsbn(), bookToValidate.getId());
+  }
+
+  private Set<Category> getBookCategories(Book formBook) {
+    Set<Category> formCategories = new HashSet<>();
+    for (Category c : formBook.getCategories()) {
+      formCategories.add(categoryRepository.findById(c.getId()).orElseThrow());
+    }
+    return formCategories;
   }
 }

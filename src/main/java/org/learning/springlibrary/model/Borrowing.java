@@ -1,5 +1,6 @@
 package org.learning.springlibrary.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,6 +25,7 @@ public class Borrowing {
 
   @ManyToOne
   @NotNull
+  @JsonIgnore
   private Book book;
 
   public Integer getId() {

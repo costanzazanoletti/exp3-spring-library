@@ -1,6 +1,5 @@
 package org.learning.springlibrary.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -47,7 +46,7 @@ public class Book {
   private Integer numberOfCopies;
   private LocalDateTime createdAt;
 
-  @JsonIgnore
+
   @OneToMany(mappedBy = "book")
   private List<Borrowing> borrowings;
 

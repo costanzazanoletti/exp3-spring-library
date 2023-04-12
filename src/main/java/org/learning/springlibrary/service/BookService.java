@@ -91,8 +91,10 @@ public class BookService {
 
   private Set<Category> getBookCategories(Book formBook) {
     Set<Category> formCategories = new HashSet<>();
-    for (Category c : formBook.getCategories()) {
-      formCategories.add(categoryRepository.findById(c.getId()).orElseThrow());
+    if (formBook.getCategories() != null) {
+      for (Category c : formBook.getCategories()) {
+        formCategories.add(categoryRepository.findById(c.getId()).orElseThrow());
+      }
     }
     return formCategories;
   }

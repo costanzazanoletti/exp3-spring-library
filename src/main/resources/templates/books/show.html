@@ -14,28 +14,52 @@
   <h2 th:text="|Written by *{authors}|" class="text-muted"></h2>
   <hr/>
   <h3 th:text="|Hi ${loggedUser.firstName} ${loggedUser.lastName}|"></h3>
-  <div>
-    <dl>
-      <dt>ISBN</dt>
-      <dd th:text="*{isbn}"></dd>
-      <dt>Publisher</dt>
-      <dd th:text="*{publisher}"></dd>
-      <dt>Year</dt>
-      <dd th:text="*{year}"></dd> <!-- ${book.getYear()}-->
-      <dt>Number of copies</dt>
-      <dd>
-        <span th:text="*{numberOfCopies}"></span>
-        <span th:text="|(*{availableCopies} available)|"></span><!-- ${book.getAvailableCopies()}-->
-      </dd>
-      <th:block th:unless="${#strings.isEmpty(book.synopsis)}">
-        <dt>Synopsis</dt>
-        <dd th:text="*{synopsis}"></dd>
-      </th:block>
-      <dt>Created at</dt>
-      <dd th:text="${#temporals.format(book.createdAt,'dd/MM/yyyy HH:mm')}"></dd>
-      <dt>Categories</dt>
-      <dd><span th:each="cat : *{categories}" th:text="${cat.name}" class="me-1"></span></dd>
-    </dl>
+  <div class="row">
+    <!-- book detail -->
+    <div class="col-6">
+
+      <dl>
+        <dt>ISBN</dt>
+        <dd th:text="*{isbn}"></dd>
+        <dt>Publisher</dt>
+        <dd th:text="*{publisher}"></dd>
+        <dt>Year</dt>
+        <dd th:text="*{year}"></dd> <!-- ${book.getYear()}-->
+        <dt>Number of copies</dt>
+        <dd>
+          <span th:text="*{numberOfCopies}"></span>
+          <span th:text="|(*{availableCopies} available)|"></span>
+          <!-- ${book.getAvailableCopies()}-->
+        </dd>
+        <th:block th:unless="${#strings.isEmpty(book.synopsis)}">
+          <dt>Synopsis</dt>
+          <dd th:text="*{synopsis}"></dd>
+        </th:block>
+        <dt>Created at</dt>
+        <dd th:text="${#temporals.format(book.createdAt,'dd/MM/yyyy HH:mm')}"></dd>
+        <dt>Categories</dt>
+        <dd><span th:each="cat : *{categories}" th:text="${cat.name}" class="me-1"></span></dd>
+      </dl>
+
+    </div>
+    <!-- book cover image -->
+    <div class="col-6">
+      <div class="h-100 position-relative">
+        <a th:href="@{|/books/*{id}/cover|}"
+           class="btn btn-primary rounded-circle position-absolute bottom-0 end-0">
+          <i class="fa-solid fa-pen-to-square"></i>
+        </a>
+        <div
+            th:if="${book.cover == null || book.cover.content == null}"
+            class="bg-secondary h-100 fs-1 d-flex justify-content-center align-items-center"
+        >
+          <i class="fa-solid fa-image"></i>
+        </div>
+        <div th:unless="${book.cover == null || book.cover.content == null}">
+          <img class="img-fluid" th:src="@{|/files/${book.cover.id}|}" alt="book cover">
+        </div>
+      </div>
+    </div>
   </div>
   <!-- borrowings -->
   <th:block th:if="${book.borrowings != null && book.borrowings.size() > 0}">

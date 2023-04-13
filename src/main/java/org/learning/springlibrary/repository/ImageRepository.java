@@ -1,0 +1,8 @@
+package org.learning.springlibrary.repository;
+
+import org.learning.springlibrary.model.Image;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ImageRepository extends JpaRepository<Image, Integer> {
+
+}

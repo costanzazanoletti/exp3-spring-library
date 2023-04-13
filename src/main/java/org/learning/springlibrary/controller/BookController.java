@@ -1,12 +1,14 @@
 package org.learning.springlibrary.controller;
 
 import jakarta.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import org.learning.springlibrary.exceptions.BookNotFoundException;
 import org.learning.springlibrary.model.AlertMessage;
 import org.learning.springlibrary.model.AlertMessage.AlertMessageType;
 import org.learning.springlibrary.model.Book;
+import org.learning.springlibrary.model.ImageForm;
 import org.learning.springlibrary.model.User;
 import org.learning.springlibrary.repository.UserRepository;
 import org.learning.springlibrary.service.BookService;
@@ -167,6 +169,35 @@ public class BookController {
           new AlertMessage(AlertMessageType.ERROR, "Book with id " + id + " not found"));
     }
     return "redirect:/books";
+  }
+
+  @GetMapping("/{id}/cover")
+  public String editCover(@PathVariable Integer id, Model model) {
+    try {
+      Book book = bookService.getById(id);
+      // creo un oggetto ImageForm e lo setto come attributo del model
+      ImageForm imageForm = new ImageForm();
+      imageForm.setBook(book);
+      model.addAttribute("imageForm", imageForm);
+      return "/books/cover";
+    } catch (BookNotFoundException e) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+  }
+
+  @PostMapping("/{id}/cover/save")
+  public String doEditCover(@PathVariable Integer id, @ModelAttribute ImageForm imageForm,
+      RedirectAttributes redirectAttributes) {
+    // persisto il file dell'immagine
+    try {
+      bookService.updateCover(id, imageForm);
+    } catch (IOException e) {
+      redirectAttributes.addFlashAttribute("message",
+          new AlertMessage(AlertMessageType.ERROR, "Unable to update book cover"));
+    } catch (BookNotFoundException e) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+    return "redirect:/books/" + Integer.toString(id);
   }
 
   /*@GetMapping("/search")

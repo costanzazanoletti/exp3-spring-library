@@ -10,6 +10,7 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -57,6 +58,9 @@ public class Book {
       inverseJoinColumns = @JoinColumn(name = "category_id"))
   private Set<Category> categories;
 
+
+  @OneToOne(mappedBy = "book")
+  private Image cover;
 
   public Book() {
     super();
@@ -160,6 +164,14 @@ public class Book {
 
   public void setCategories(Set<Category> categories) {
     this.categories = categories;
+  }
+
+  public Image getCover() {
+    return cover;
+  }
+
+  public void setCover(Image cover) {
+    this.cover = cover;
   }
 
   /* CUSTOM METHODS */

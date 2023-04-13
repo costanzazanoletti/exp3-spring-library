@@ -1,5 +1,6 @@
 package org.learning.springlibrary.service;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -8,8 +9,11 @@ import java.util.Set;
 import org.learning.springlibrary.exceptions.BookNotFoundException;
 import org.learning.springlibrary.model.Book;
 import org.learning.springlibrary.model.Category;
+import org.learning.springlibrary.model.Image;
+import org.learning.springlibrary.model.ImageForm;
 import org.learning.springlibrary.repository.BookRepository;
 import org.learning.springlibrary.repository.CategoryRepository;
+import org.learning.springlibrary.repository.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -22,6 +26,9 @@ public class BookService {
 
   @Autowired
   CategoryRepository categoryRepository;
+
+  @Autowired
+  ImageRepository imageRepository;
 
   public Book createBook(Book formBook) {
     Book bookToPersist = new Book();
@@ -79,6 +86,15 @@ public class BookService {
     } catch (Exception e) {
       return false;
     }
+  }
+
+  public Image updateCover(Integer bookId, ImageForm imageForm)
+      throws BookNotFoundException, IOException {
+    Book book = getById(bookId);
+    Image newImage = new Image();
+    newImage.setBook(book);
+    newImage.setContent(imageForm.getMultipartFile().getBytes());
+    return imageRepository.save(newImage);
   }
 
   public boolean isValidIsbn(Book bookToValidate) {

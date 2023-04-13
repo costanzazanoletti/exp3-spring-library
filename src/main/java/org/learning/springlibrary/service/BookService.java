@@ -91,9 +91,18 @@ public class BookService {
   public Image updateCover(Integer bookId, ImageForm imageForm)
       throws BookNotFoundException, IOException {
     Book book = getById(bookId);
+    // delete old image if exists
+    Image oldImage = book.getCover();
+    if (oldImage != null) {
+      book.setCover(null); // disconnect image from book
+      oldImage.setBook(null); // disconnect book from image
+      imageRepository.delete(oldImage);
+    }
+    // create new image
     Image newImage = new Image();
     newImage.setBook(book);
     newImage.setContent(imageForm.getMultipartFile().getBytes());
+    // persist
     return imageRepository.save(newImage);
   }
 

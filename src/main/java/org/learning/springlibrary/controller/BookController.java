@@ -186,8 +186,12 @@ public class BookController {
   }
 
   @PostMapping("/{id}/cover/save")
-  public String doEditCover(@PathVariable Integer id, @ModelAttribute ImageForm imageForm,
+  public String doEditCover(@PathVariable Integer id, @Valid @ModelAttribute ImageForm imageForm,
+      BindingResult bindingResult,
       RedirectAttributes redirectAttributes) {
+    if (bindingResult.hasErrors()) {
+      return "/books/cover";
+    }
     // persisto il file dell'immagine
     try {
       bookService.updateCover(id, imageForm);

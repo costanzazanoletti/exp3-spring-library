@@ -16,6 +16,8 @@
       class="row gy-3"
       enctype="multipart/form-data"
   >
+    <!-- hidden input book -->
+    <input type="hidden" th:field="*{book}">
     <!-- errors -->
     <ul>
       <li th:each="err : ${#fields.globalErrors() }" th:text="${err}"></li>

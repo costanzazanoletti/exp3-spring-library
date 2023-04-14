@@ -1,11 +1,13 @@
 package org.learning.springlibrary.model;
 
+import org.learning.springlibrary.validators.ValidImageFile;
 import org.springframework.web.multipart.MultipartFile;
 
 public class ImageForm {
 
-  private MultipartFile multipartFile;
 
+  @ValidImageFile
+  private MultipartFile multipartFile;
   private Book book;
 
   public MultipartFile getMultipartFile() {

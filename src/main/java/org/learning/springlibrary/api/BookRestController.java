@@ -8,6 +8,9 @@ import org.learning.springlibrary.model.Book;
 import org.learning.springlibrary.model.Borrowing;
 import org.learning.springlibrary.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,6 +39,15 @@ public class BookRestController {
       return bookService.getFilteredBooks(search.get());
     }
     return bookService.getAllBooks();
+  }
+
+  // pagina di books
+  @GetMapping("/page")
+  public Page<Book> page(/*@RequestParam(name = "page", defaultValue = "0") int page,
+      @RequestParam(name = "size", defaultValue = "2") int size*/
+      @PageableDefault(page = 0, size = 2) Pageable pageable) {
+    // return bookService.getPage(page, size);
+    return bookService.getPage(pageable);
   }
 
   // singolo book

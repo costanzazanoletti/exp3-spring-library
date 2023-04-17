@@ -15,6 +15,9 @@ import org.learning.springlibrary.repository.BookRepository;
 import org.learning.springlibrary.repository.CategoryRepository;
 import org.learning.springlibrary.repository.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +32,16 @@ public class BookService {
 
   @Autowired
   ImageRepository imageRepository;
+
+
+  public Page<Book> getPage(Pageable pageable) {
+    return bookRepository.findAll(pageable);
+  }
+
+  public Page<Book> getPage(int page, int size) {
+    Page<Book> bookPage = bookRepository.findAll(PageRequest.of(page, size));
+    return bookPage;
+  }
 
   public Book createBook(Book formBook) {
     Book bookToPersist = new Book();

@@ -1,0 +1,4 @@
+insert into "books" ("authors", "created_at", "isbn", "copies", "publisher", "synopsis", "title", "year") values('J.K. Rowling', '2023-03-29 12:00:00', '9788831003384', 10, 'Salani', 'Harry Potter first volume', 'Harry Potter and the Sorcerer stone', 1999);
+insert into "books" ("authors", "created_at", "isbn", "copies", "publisher", "synopsis", "title", "year") values('Frank Herbert', '2023-03-29 12:00:00', '9788851003384', 1, 'Einaudi', '', 'Dune', 1969);
+insert into "books" ("authors", "created_at", "isbn", "copies", "publisher", "synopsis", "title", "year") values('J.K. Rowling', '2023-03-29 12:00:00', '1788831003384', 10, 'Salani', 'Harry Potter first volume', 'Harry Potter and the Sorcerer stone', 1999);
+insert into "books" ("authors", "created_at", "isbn", "copies", "publisher", "synopsis", "title", "year") values('Frank Herbert', '2023-03-29 12:00:00', '2788851003384', 1, 'Einaudi', '', 'Dune', 1969);
